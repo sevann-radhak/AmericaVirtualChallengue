@@ -3,19 +3,20 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using AmericaVirtualChallengue.Web.Helpers;
     using Entities;
     using Microsoft.AspNetCore.Identity;
 
     public class SeedDb
     {
         private readonly DataContext context;
-        private readonly UserManager<User> userManager;
+        private readonly IUserHelper userHelper;
         private Random random;
 
-        public SeedDb(DataContext context, UserManager<User> userManager)
+        public SeedDb(DataContext context, IUserHelper userHelper)
         {
             this.context = context;
-            this.userManager = userManager;
+            this.userHelper = userHelper;
             this.random = new Random();
         }
 
@@ -25,7 +26,7 @@
 
             //TODO: Verify what happens if there is not DB conection
             // Verify Users
-            var user = await this.userManager.FindByEmailAsync("sevann.radhak@gmail.com");
+            var user = await this.userHelper.FindByEmailAsync("sevann.radhak@gmail.com");
             //if (user == null)
             //{
             //    user = new User
@@ -63,7 +64,7 @@
                     PhoneNumber = "5491173627795"
                 };
 
-                var result = await this.userManager.CreateAsync(user, "sevann.radhak@gmail.com");
+                var result = await this.userHelper.CreateAsync(user, "sevann.radhak@gmail.com");
 
                 if (result != IdentityResult.Success)
                 {

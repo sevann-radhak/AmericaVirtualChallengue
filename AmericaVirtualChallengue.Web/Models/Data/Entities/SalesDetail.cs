@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AmericaVirtualChallengue.Web.Models.Data.Entities
 {
-    public class SalesDetail
+    public class SalesDetail : IEntity
     {
         public int Id { get; set; }
 
