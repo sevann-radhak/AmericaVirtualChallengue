@@ -32,6 +32,13 @@ namespace AmericaVirtualChallengue.Web
                 cfg.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            // Seed: Initial data for DB
+            services.AddTransient<SeedDb>();
+
+            // Implements the injection of repository, but using interface
+            services.AddScoped<IRepository, MockRepository>();
+            //services.AddScoped<IRepository, Repository>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
