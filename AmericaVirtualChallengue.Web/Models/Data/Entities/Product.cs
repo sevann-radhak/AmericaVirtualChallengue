@@ -22,8 +22,5 @@ namespace AmericaVirtualChallengue.Web.Models.Data.Entities
 
         [Display(Name = "Is Availabe?")]
         public bool IsAvailabe { get; set; }
-
-        //[Display(Name = "Option")]
-        //public Option OptionId { get; set; }
     }
 }

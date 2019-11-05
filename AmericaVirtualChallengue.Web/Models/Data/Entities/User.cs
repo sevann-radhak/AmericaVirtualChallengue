@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AmericaVirtualChallengue.Web.Models.Data.Entities
+﻿namespace AmericaVirtualChallengue.Web.Models.Data.Entities
 {
-    public class User
+    using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Identity;
+
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
+        [Required(ErrorMessage = "The field {0} is required")]
+        [MaxLength(60, ErrorMessage = "The field {0} only can contain {1} characters length")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "The field {0} is required")]
+        [MaxLength(60, ErrorMessage = "The field {0} only can contain {1} characters length")]
+        public string LastName { get; set; }
     }
 }

@@ -4,14 +4,16 @@ using AmericaVirtualChallengue.Web.Models.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AmericaVirtualChallengue.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20191105202052_ModelsFK")]
+    partial class ModelsFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,16 +84,12 @@ namespace AmericaVirtualChallengue.Web.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<int?>("OptionId");
-
                     b.Property<decimal>("Price");
 
                     b.Property<string>("UserId")
                         .IsRequired();
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OptionId");
 
                     b.HasIndex("UserId");
 
@@ -319,10 +317,6 @@ namespace AmericaVirtualChallengue.Web.Migrations
 
             modelBuilder.Entity("AmericaVirtualChallengue.Web.Models.Data.Entities.Sale", b =>
                 {
-                    b.HasOne("AmericaVirtualChallengue.Web.Models.Data.Entities.Option", "Option")
-                        .WithMany()
-                        .HasForeignKey("OptionId");
-
                     b.HasOne("AmericaVirtualChallengue.Web.Models.Data.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")

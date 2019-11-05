@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AmericaVirtualChallengue.Web.Models.Data.Entities
+﻿namespace AmericaVirtualChallengue.Web.Models.Data.Entities
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class ProductsTopic
     {
         public int Id { get; set; }
 
-        //[Required(ErrorMessage = "The field {0} is required")]
-        //[Display(Name = "Topic")]
-        //public Topic TopicId { get; set; }
+        [Required(ErrorMessage = "The field {0} is required")]
+        public Topic Topic { get; set; }
 
-        //[Required(ErrorMessage = "The field {0} is required")]
-        //[Display(Name = "Product")]
-        //public Product ProductId { get; set; }
+        [Required(ErrorMessage = "The field {0} is required")]
+        public Product Product { get; set; }
     }
 }
