@@ -1,12 +1,9 @@
 ﻿namespace AmericaVirtualChallengue.Web.Helpers
 {
-    using AmericaVirtualChallengue.Web.Models.Data.Entities;
-    using AmericaVirtualChallengue.Web.Models.ModelsView;
-    using Microsoft.AspNetCore.Identity;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Identity;
+    using Models.Data.Entities;
+    using Models.ModelsView;
 
     public class UserHelper : IUserHelper
     {
@@ -42,6 +39,23 @@
         {
             await this.signInManager.SignOutAsync();
         }
-    }
 
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword)
+        {
+            return await this.userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(User user)
+        {
+            return await this.userManager.UpdateAsync(user);
+        }
+
+        public async Task<SignInResult> ValidatePasswordAsync(User user, string password)
+        {
+            return await this.signInManager.CheckPasswordSignInAsync(
+                user,
+                password,
+                false);
+        }
+    }
 }

@@ -11,6 +11,8 @@
     using Helpers;
     using Models.Data;
     using Models.Data.Entities;
+    using Microsoft.IdentityModel.Tokens;
+    using System.Text;
 
     public class Startup
     {
@@ -36,6 +38,20 @@
                 cfg.Password.RequiredLength = 6;
             })
             .AddEntityFrameworkStores<DataContext>();
+
+            // Tokens
+            services.AddAuthentication()
+            .AddCookie()
+            .AddJwtBearer(cfg =>
+            {
+                cfg.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = this.Configuration["Tokens:Issuer"],
+                    ValidAudience = this.Configuration["Tokens:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]))
+                };
+            });
+
 
             // Context
             services.AddDbContext<DataContext>(cfg =>
