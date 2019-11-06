@@ -1,11 +1,13 @@
-﻿using AmericaVirtualChallengue.Web.Helpers;
-using AmericaVirtualChallengue.Web.Models.ModelsView;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AmericaVirtualChallengue.Web.Controllers
+﻿namespace AmericaVirtualChallengue.Web.Controllers
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Helpers;
+    using Models.Data.Entities;
+    using Models.ModelsView;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+
     public class AccountController : Controller
     {
         private readonly IUserHelper userHelper;
@@ -30,7 +32,7 @@ namespace AmericaVirtualChallengue.Web.Controllers
         {
             if (this.ModelState.IsValid)
             {
-                var result = await this.userHelper.LoginAsync(model);
+                Microsoft.AspNetCore.Identity.SignInResult result = await this.userHelper.LoginAsync(model);
                 if (result.Succeeded)
                 {
                     if (this.Request.Query.Keys.Contains("ReturnUrl"))
@@ -50,6 +52,60 @@ namespace AmericaVirtualChallengue.Web.Controllers
         {
             await this.userHelper.LogoutAsync();
             return this.RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Register()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterNewUserViewModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                User user = await this.userHelper.FindByEmailAsync(model.Username);
+                if (user == null)
+                {
+                    user = new User
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Email = model.Username,
+                        UserName = model.Username
+                    };
+
+                    IdentityResult result = await this.userHelper.CreateAsync(user, model.Password);
+
+                    if (result != IdentityResult.Success)
+                    {
+                        this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
+
+                        return this.View(model);
+                    }
+
+                    LoginViewModel loginViewModel = new LoginViewModel
+                    {
+                        Password = model.Password,
+                        RememberMe = false,
+                        Username = model.Username
+                    };
+
+                    Microsoft.AspNetCore.Identity.SignInResult result2 = await this.userHelper.LoginAsync(loginViewModel);
+
+                    if (result2.Succeeded)
+                    {
+                        return this.RedirectToAction("Index", "Home");
+                    }
+
+                    this.ModelState.AddModelError(string.Empty, "The user couldn't be login.");
+                    return this.View(model);
+                }
+
+                this.ModelState.AddModelError(string.Empty, "The username is already registered.");
+            }
+
+            return this.View(model);
         }
     }
 }
