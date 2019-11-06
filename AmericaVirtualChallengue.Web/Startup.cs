@@ -13,6 +13,7 @@
     using Models.Data.Entities;
     using Microsoft.IdentityModel.Tokens;
     using System.Text;
+    using Models.Data.Repositories;
 
     public class Startup
     {
@@ -67,6 +68,7 @@
 
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -81,8 +83,6 @@
                 options.LoginPath = "/Account/NotAuthorized";
                 options.AccessDeniedPath = "/Account/NotAuthorized";
             });
-
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
