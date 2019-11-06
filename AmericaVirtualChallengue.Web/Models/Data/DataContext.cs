@@ -8,10 +8,17 @@
     public class DataContext : IdentityDbContext<User>
     {
         public DbSet<Product> Products { get; set; }
+
         public DbSet<Option> Options { get; set; }
+
         public DbSet<ProductsTopic> ProductTopics { get; set; }
-        public DbSet<Sale> Sales { get; set; }
-        public DbSet<SalesDetail> SalesDetails { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        public DbSet<OrderDetailTemp> OrderDetailTemps { get; set; }
+
         public DbSet<Topic> Topics { get; set; }
 
 

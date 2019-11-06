@@ -4,14 +4,16 @@ using AmericaVirtualChallengue.Web.Models.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AmericaVirtualChallengue.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20191106221711_ChangeModels")]
+    partial class ChangeModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,30 +75,6 @@ namespace AmericaVirtualChallengue.Web.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
-                });
-
-            modelBuilder.Entity("AmericaVirtualChallengue.Web.Models.Data.Entities.OrderDetailTemp", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<double>("Quantity");
-
-                    b.Property<string>("UserId")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("OrderDetailTemps");
                 });
 
             modelBuilder.Entity("AmericaVirtualChallengue.Web.Models.Data.Entities.Product", b =>
@@ -342,19 +320,6 @@ namespace AmericaVirtualChallengue.Web.Migrations
                     b.HasOne("AmericaVirtualChallengue.Web.Models.Data.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("AmericaVirtualChallengue.Web.Models.Data.Entities.OrderDetailTemp", b =>
-                {
-                    b.HasOne("AmericaVirtualChallengue.Web.Models.Data.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("AmericaVirtualChallengue.Web.Models.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

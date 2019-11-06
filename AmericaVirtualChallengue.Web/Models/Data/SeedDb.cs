@@ -37,7 +37,7 @@
                 && !this.context.Products.Any()
                 && !this.context.Options.Any()
                 && !this.context.Topics.Any()
-                && !this.context.Sales.Any())
+                && !this.context.Orders.Any())
             {
                 // Create the user
                 user = new User
@@ -113,23 +113,23 @@
                 this.AddProductsTopics(thirdProduct, firstTopic);
 
                 // Add a sale
-                Sale sale = new Sale
-                {
-                    Date = DateTime.Now,
-                    Option = bronze,
-                    Price = this.random.Next(100),
-                    User = user
-                };
-                this.AddSale(sale);
+                //Order sale = new Order
+                //{
+                //    OrderDate = DateTime.Now,
+                //    //Option = bronze,
+                //    Price = this.random.Next(100),k
+                //    User = user
+                //};
+                //this.AddSale(sale);
 
                 // Add the sale details
-                this.AddSaleDetails(new SalesDetail
-                {
-                    Product = firstProduct,
-                    Quantity = 2,
-                    Price = firstProduct.Price * 2,
-                    Sale = sale
-                });
+                //this.AddSaleDetails(new OrderDetail
+                //{
+                //    Product = firstProduct,
+                //    Quantity = 2,
+                //    Price = firstProduct.Price * 2,
+                //    Sale = sale
+                //});
 
                 var resultSeed = await this.context.SaveChangesAsync() > 0;
 
@@ -164,15 +164,15 @@
             });
         }
 
-        private void AddSale(Sale sale)
-        {
-            this.context.Sales.Add(sale);
-        }
+        //private void AddSale(Order sale)
+        //{
+        //    this.context.Sales.Add(sale);
+        //}
 
-        private void AddSaleDetails(SalesDetail salesDetail)
-        {
-            this.context.SalesDetails.Add(salesDetail);
-        }
+        //private void AddSaleDetails(OrderDetail salesDetail)
+        //{
+        //    this.context.SalesDetails.Add(salesDetail);
+        //}
     }
 
 }
