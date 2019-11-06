@@ -1,14 +1,17 @@
 ﻿namespace AmericaVirtualChallengue.Web.Controllers.API
 {
-    using AmericaVirtualChallengue.Web.Models.Data;
-    using AmericaVirtualChallengue.Web.Models.Data.Entities;
-    using AmericaVirtualChallengue.Web.Models.ModelsView;
-    using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Models.Data;
+    using Models.Data.Entities;
+    using Models.ModelsView;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[Controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ProductsController : Controller
     {
         private readonly IProductRepository productRepository;

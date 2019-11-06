@@ -1,15 +1,17 @@
 ﻿namespace AmericaVirtualChallengue.Web.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using AmericaVirtualChallengue.Web.Models.ModelsView;
+    using AmericaVirtualChallengue.Web.Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Models.Data;
     using Models.Data.Entities;
+    using Models.ModelsView;
+
     public class ProductsController : Controller
     {
         private readonly IProductRepository productRepository;
@@ -31,20 +33,22 @@
         {
             if (id == null)
             {
-                return NotFound();
+                //TODO: Complete the redirections of project
+                return new NotFoundViewResult("ProductNotFound");
             }
 
             Product product = await this.productRepository.GetByIdAsync(id.Value);
 
             if (product == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ProductNotFound");
             }
 
             return View(product);
         }
 
         // GET: Products/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -60,18 +64,18 @@
             if (ModelState.IsValid)
             {
                 // Verify if user sent a photo
-                var path = string.Empty;
+                string path = string.Empty;
 
                 if (view.ImageFile != null && view.ImageFile.Length > 0)
                 {
-                    var guid = Guid.NewGuid().ToString();
+                    string guid = Guid.NewGuid().ToString();
 
                     path = Path.Combine(
                         Directory.GetCurrentDirectory(),
                         "wwwroot\\images\\Products",
                         $"{guid}{view.ImageFile.FileName}");
 
-                    using (var stream = new FileStream(path, FileMode.Create))
+                    using (FileStream stream = new FileStream(path, FileMode.Create))
                     {
                         await view.ImageFile.CopyToAsync(stream);
                     }
@@ -91,6 +95,7 @@
         }
 
         // GET: Products/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -127,18 +132,18 @@
                 try
                 {
                     // Verify if user sent a photo
-                    var path = view.ImageUrl;
+                    string path = view.ImageUrl;
 
                     if (view.ImageFile != null && view.ImageFile.Length > 0)
                     {
-                        var guid = Guid.NewGuid().ToString();
+                        string guid = Guid.NewGuid().ToString();
 
                         path = Path.Combine(
                             Directory.GetCurrentDirectory(),
                             "wwwroot\\images\\Products",
                             $"{guid}{view.ImageFile.FileName}");
 
-                        using (var stream = new FileStream(path, FileMode.Create))
+                        using (FileStream stream = new FileStream(path, FileMode.Create))
                         {
                             await view.ImageFile.CopyToAsync(stream);
                         }
@@ -168,6 +173,7 @@
         }
 
         // GET: Products/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -222,9 +228,10 @@
             };
         }
 
-        //private bool ProductExists(int id)
-        //{
-        //    return await this.productRepository.ExistAsync(id);
-        //}
+        public IActionResult ProductNotFound()
+        {
+            return this.View();
+        }
+
     }
 }
