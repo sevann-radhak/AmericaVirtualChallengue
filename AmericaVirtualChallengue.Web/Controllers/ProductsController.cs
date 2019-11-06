@@ -1,6 +1,7 @@
 ﻿namespace AmericaVirtualChallengue.Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -103,8 +104,12 @@
                 return NotFound();
             }
 
+            //TODO: Include edit topics or remove it
             // Transform to ProductViewModel object
             ProductViewModel view = this.ToProductViewModel(product);
+            //List<Topic> topics = this.productRepository.GetTopicsByProduct(product);
+
+            //ProductViewAPI view = this.productRepository.ToProductViewAPI(product,topics);
 
             return View(view);
         }
@@ -194,6 +199,7 @@
         {
             return new Product
             {
+                Description = view.Description,
                 Id = view.Id,
                 ImageUrl = path,
                 IsAvailabe = view.IsAvailabe,
@@ -206,6 +212,7 @@
         {
             return new ProductViewModel
             {
+                Description = product.Description,
                 Id = product.Id,
                 ImageUrl = product.ImageUrl,
                 IsAvailabe = product.IsAvailabe,

@@ -2,8 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using AmericaVirtualChallengue.Web.Models.ModelsView;
     using Entities;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
     public class ProductRepository : GenericRepository<Product>, IProductRepository
@@ -15,16 +17,9 @@
             this.context = context;
         }
 
-        public ProductViewAPI GetProductWithTopics(int id)
+        public List<Topic> GetTopicsByProduct(Product product)
         {
-            Product product = context.Products.Find(id);
-
-            if(product == null)
-            {
-                return null;
-            }
-
-            List<ProductsTopic> pts = context.ProductTopics.Where(pt => pt.Product == product).Include(pt =>  pt.Topic).ToList();
+            List<ProductsTopic> pts = context.ProductTopics.Where(pt => pt.Product == product).Include(pt => pt.Topic).ToList();
             List<Topic> topics = new List<Topic>();
 
             foreach (var pt in pts)
@@ -32,8 +27,14 @@
                 topics.Add(pt.Topic);
             }
 
-            ProductViewAPI pApi = new ProductViewAPI
+            return topics;
+        }
+
+        public ProductViewAPI ToProductViewAPI(Product product, List<Topic> topics)
+        {
+            ProductViewAPI pVApi = new ProductViewAPI
             {
+                Description = product.Description,
                 Id = product.Id,
                 ImageUrl = product.ImageUrl,
                 IsAvailabe = product.IsAvailabe,
@@ -42,7 +43,7 @@
                 Topics = topics
             };
 
-            return pApi;
+            return pVApi;
         }
     }
 

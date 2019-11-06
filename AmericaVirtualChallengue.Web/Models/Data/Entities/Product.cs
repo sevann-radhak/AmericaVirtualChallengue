@@ -15,6 +15,9 @@ namespace AmericaVirtualChallengue.Web.Models.Data.Entities
         [MaxLength(60, ErrorMessage = "The field {0} only can contain {1} characters length")]
         public string Name { get; set; }
 
+        [DataType(DataType.MultilineText)]
+        public string Description { get; set; }
+
         [Range(typeof(decimal), "0", "79228162514264337593543950335")]
         [Required(ErrorMessage = "The field {0} is required")]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]

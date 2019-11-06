@@ -3,10 +3,13 @@
     using ModelsView;
     using Entities;
     using System.Linq;
+    using System.Collections.Generic;
 
     public interface IProductRepository : IGenericRepository<Product>
     {
-        ProductViewAPI GetProductWithTopics(int id);
+        List<Topic> GetTopicsByProduct(Product product);
+        ProductViewAPI ToProductViewAPI(Product product, List<Topic> topics);
+        //List<Topic> GetTopicsByProduct(Product product);
     }
 
 }
