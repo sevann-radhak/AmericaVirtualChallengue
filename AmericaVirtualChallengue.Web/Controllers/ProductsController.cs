@@ -22,6 +22,7 @@
         // GET: Products
         public IActionResult Index()
         {
+            //TODO: hidden disabled products
             return View(this.productRepository.GetAll().OrderBy(p => p.Name));
         }
 
@@ -63,19 +64,19 @@
 
                 if (view.ImageFile != null && view.ImageFile.Length > 0)
                 {
-                    var timeNow = DateTime.Now.ToFileTime();
+                    var guid = Guid.NewGuid().ToString();
 
                     path = Path.Combine(
                         Directory.GetCurrentDirectory(),
                         "wwwroot\\images\\Products",
-                        $"{timeNow}{view.ImageFile.FileName}");
+                        $"{guid}{view.ImageFile.FileName}");
 
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         await view.ImageFile.CopyToAsync(stream);
                     }
 
-                    path = $"~/images/Products/{timeNow}{view.ImageFile.FileName}";
+                    path = $"~/images/Products/{guid}{view.ImageFile.FileName}";
                 }
 
                 // Create the Product object
@@ -130,19 +131,19 @@
 
                     if (view.ImageFile != null && view.ImageFile.Length > 0)
                     {
-                        var timeNow = DateTime.Now.ToFileTime();
+                        var guid = Guid.NewGuid().ToString();
 
                         path = Path.Combine(
                             Directory.GetCurrentDirectory(),
                             "wwwroot\\images\\Products",
-                            $"{timeNow}{view.ImageFile.FileName}");
+                            $"{guid}{view.ImageFile.FileName}");
 
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
                             await view.ImageFile.CopyToAsync(stream);
                         }
 
-                        path = $"~/images/Products/{timeNow}{view.ImageFile.FileName}";
+                        path = $"~/images/Products/{guid}{view.ImageFile.FileName}";
                     }
 
                     // Transform to Product object
