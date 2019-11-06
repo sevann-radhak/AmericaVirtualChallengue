@@ -39,7 +39,9 @@
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="IsAvailabe" /> @Html.DisplayNameFor(model => model.IsAvailabe)
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Create</button>
+                        <a asp-action="Index" class="btn btn-success"><i class="fa fa-chevron-left"></i> Back to List</a>
+
                     </label>
                 </div>
             </div>

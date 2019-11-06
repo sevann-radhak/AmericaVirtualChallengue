@@ -24,28 +24,13 @@
         {
             await this.context.Database.EnsureCreatedAsync();
 
+            // Verify roles
+            await this.userHelper.CheckRoleAsync("Admin");
+            await this.userHelper.CheckRoleAsync("User");
+
             //TODO: Verify what happens if there is not DB conection
             // Verify Users
             var user = await this.userHelper.FindByEmailAsync("sevann.radhak@gmail.com");
-            //if (user == null)
-            //{
-            //    user = new User
-            //    {
-            //        FirstName = "Sevann",
-            //        LastName = "Radhak",
-            //        Email = "sevann.radhak@gmail.com",
-            //        UserName = "sevann.radhak@gmail.com",
-            //        PhoneNumber = "5491173627795"
-            //    };
-
-            //    var result = await this.userManager.CreateAsync(user, "sevann.radhak@gmail.com");
-
-            //    if (result != IdentityResult.Success)
-            //    {
-            //        throw new InvalidOperationException("Could not create the user in seeder");
-            //    }
-            //}
-
 
             // Verify Products, then create initial data
             if (user == null
@@ -69,6 +54,14 @@
                 if (result != IdentityResult.Success)
                 {
                     throw new InvalidOperationException("Could not create the user in seeder");
+                }
+
+                // Add role to user
+                //await this.userHelper.AddUserToRoleAsync(user, "Admin");
+                var isInRole = await this.userHelper.IsUserInRoleAsync(user, "Admin");
+                if (!isInRole)
+                {
+                    await this.userHelper.AddUserToRoleAsync(user, "Admin");
                 }
 
                 // Add options
