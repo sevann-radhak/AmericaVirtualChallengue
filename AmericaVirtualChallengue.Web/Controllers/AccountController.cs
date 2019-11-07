@@ -85,6 +85,12 @@
 
                     IdentityResult result = await this.userHelper.CreateAsync(user, model.Password);
 
+                    var isInRole = await this.userHelper.IsUserInRoleAsync(user, "User");
+                    if (!isInRole)
+                    {
+                        await this.userHelper.AddUserToRoleAsync(user, "User");
+                    }
+
                     if (result != IdentityResult.Success)
                     {
                         this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");

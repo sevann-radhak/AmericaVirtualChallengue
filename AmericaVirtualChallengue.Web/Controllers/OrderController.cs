@@ -7,7 +7,7 @@
     using AmericaVirtualChallengue.Web.Models.Data;
     using AmericaVirtualChallengue.Web.Models.ModelsView;
 
-    [Authorize]
+    [Authorize(Roles = "Admin, User")]
     public class OrdersController : Controller
     {
         private readonly IOrderRepository orderRepository;
@@ -91,6 +91,16 @@
             return this.RedirectToAction("Create");
         }
 
+        public async Task<IActionResult> ConfirmOrder()
+        {
+            var response = await this.orderRepository.ConfirmOrderAsync(this.User.Identity.Name);
+            if (response)
+            {
+                return this.RedirectToAction("Index");
+            }
+
+            return this.RedirectToAction("Create");
+        }
 
     }
 
