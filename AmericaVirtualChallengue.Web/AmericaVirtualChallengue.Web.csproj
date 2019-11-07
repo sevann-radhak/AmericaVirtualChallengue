@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\node_modules\**" />
+    <Content Remove="wwwroot\node_modules\**" />
+    <EmbeddedResource Remove="wwwroot\node_modules\**" />
+    <None Remove="wwwroot\node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\node_modules\bootstrap-datepicker\dist\css\bootstrap-datepicker.css" />
     <Content Include="wwwroot\node_modules\bootstrap-datepicker\dist\css\bootstrap-datepicker.min.css" />
     <Content Include="wwwroot\node_modules\bootstrap-datepicker\dist\css\bootstrap-datepicker.standalone.css" />
@@ -28,10 +35,6 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\Products\" />
   </ItemGroup>
 
   <ItemGroup>
