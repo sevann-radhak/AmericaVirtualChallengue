@@ -1,5 +1,6 @@
 ﻿namespace AmericaVirtualChallengue.Web.Helpers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Identity;
     using Models.Data.Entities;
@@ -26,5 +27,13 @@
         Task AddUserToRoleAsync(User user, string roleName);
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+        Task<List<User>> GetAllUsersAsync();
+
+        Task<User> GetUserByIdAsync(string userId);
+
+        Task RemoveUserFromRoleAsync(User user, string roleName);
+
+        Task DeleteUserAsync(User user);
     }
 }

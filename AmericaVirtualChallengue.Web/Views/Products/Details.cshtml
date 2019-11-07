@@ -1,45 +1,11 @@
-﻿@model AmericaVirtualChallengue.Web.Models.Data.Entities.Product
+﻿@model AmericaVirtualChallengue.Web.Models.ModelsView.ProductViewAPI
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
-
 <div>
-    <h4>Product</h4>
     <hr />
-    <div class="col-md-6">
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Price)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Price)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.IsAvailabe)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.IsAvailabe)
-            </dd>
-        </dl>
-    </div>
 
     <div class="col-md-6">
         @if (!string.IsNullOrEmpty(Model.ImageUrl))
@@ -47,8 +13,47 @@
             <img src="@Url.Content(Model.ImageUrl)" alt="@Model.Name" title="@Model.Name" style="width:300px;height:450px;max-width: 100%; height: auto;" />
         }
     </div>
+
+    <div class="col-md-6">
+        <dl>
+            <dd>
+                <h2>@Html.DisplayFor(model => model.Name)</h2>
+            </dd>
+
+            <dd>
+                <h3>@Html.DisplayFor(model => model.Price)</h3>
+            </dd>
+
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IsAvailabe)
+
+                @Html.DisplayFor(model => model.IsAvailabe)
+            </dt>
+            <dt style="margin-top: 20px;">
+                @foreach (var topic in Model.Topics)
+                {
+                    <div class="card mt-2">
+                        <div class="card-body">
+                            <h5 class="card-title">@topic.Description</h5>
+                        </div>
+                    </div>
+                }
+            </dt>
+        </dl>
+    </div>
 </div>
+
+<br clear="all" />
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (this.User.IsInRole("Admin"))
+    {
+
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    }
+    <a asp-action="Index" class="btn btn-success">Back to Products</a>
 </div>

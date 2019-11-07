@@ -24,42 +24,56 @@
         {
             await this.context.Database.EnsureCreatedAsync();
 
-            // Verify roles
-            //await this.userHelper.CheckRoleAsync("Admin");
-            //await this.userHelper.CheckRoleAsync("User");
+            // Check roles
             await this.CheckRoles();
 
             await this.CheckUserAsync("virtual.america@gmail.com", "Virtual", "America", "User");
             await this.CheckUserAsync("homero.simpson@gmail.com", "Homero", "Simpson", "User");
-            var user = await this.CheckUserAsync("sevann.radhak@gmail.com", "Sevann", "Radhak", "Admin");
-
+            await this.CheckUserAsync("sevann.radhak@gmail.com", "Sevann", "Radhak", "Admin");
 
             // Add products
             if (!this.context.Products.Any())
             {
-                this.AddProduct(
-                    "Serv Dev: Webapp ecommerce", 
-                    "Aplicación web para servicios relacionados con ecommerce",
+                // Add topics
+                Topic firstTopic = new Topic { Description = "Requirements analysis" };
+                Topic secondTopic = new Topic { Description = "Desktop and mobile interfaces design" };
+                Topic thirdtTopic = new Topic { Description = "Frontend and backend development" };
+                this.AddTopic(firstTopic);
+                this.AddTopic(secondTopic);
+                this.AddTopic(thirdtTopic);
+
+                Product product = this.AddProduct(
+                    "Serv Dev: Webapp ecommerce",
+                    "Aplicación web para servicios relacionados con ecommerce. Especial para sus necesidades",
                     "ecommerce",
                     15900);
-                this.AddProduct(
+                this.AddProductsTopics(product, firstTopic);
+                this.AddProductsTopics(product, secondTopic);
+                this.AddProductsTopics(product, thirdtTopic);
+                product = this.AddProduct(
                     "Institutional Site",
-                    "Sitios institucionales para diferentes compañías. Pueden incluir determinadas reglas de negocio",
+                    "Sitios institucionales para diferentes compañías. Pueden incluir determinadas reglas de negocio y amplio detalle en funcionalidades",
                     "institutional",
                     45900);
+                this.AddProductsTopics(product, firstTopic);
+                this.AddProductsTopics(product, thirdtTopic);
                 this.AddProduct(
                     "Game Xs",
-                    "Juego de aventura para aficionados",
+                    "Juego de aventura para aficionados, disfrute de su primera verión",
                     "gamexs",
                     4500);
+                this.AddProductsTopics(product, secondTopic);
 
                 for (int i = 0; i < 20; i++)
                 {
-                    this.AddProduct(
+                    product = this.AddProduct(
                     "Serv Dev: Webapp ecommerce Copy",
-                    "Aplicación web evolucionada para servicios relacionados con ecommerce, incluye mayor soporte y nuevas funcionalidades",
+                    "Aplicación web evolucionada para servicios relacionados con ecommerce, incluye mayor soporte y nuevas herramientas de apoyo",
                     "ecommerce",
                     5000);
+                    this.AddProductsTopics(product, firstTopic);
+                    this.AddProductsTopics(product, secondTopic);
+                    this.AddProductsTopics(product, thirdtTopic);
                 }
 
                 await this.context.SaveChangesAsync();
@@ -204,23 +218,46 @@
             }
 
             await this.userHelper.AddUserToRoleAsync(user, role);
+
+            if(user.UserName == "sevann.radhak@gmail.com")
+            {
+                await this.userHelper.AddUserToRoleAsync(user, "User");
+            }
             //var token = await this.userHelper.GenerateEmailConfirmationTokenAsync(user);
             //await this.userHelper.ConfirmEmailAsync(user, token);
             return user;
         }
 
-        private void AddProduct(string name, string description, string imageUrl, decimal price)
+        private Product AddProduct(string name, string description, string imageUrl, decimal price)
         {
-            this.context.Products.Add(new Product
+            var product = new Product
             {
                 Name = name,
                 Price = price,
+                Description = description,
                 IsAvailabe = true,
                 ImageUrl = $"~/images/Products/{imageUrl}.png"
+            };
+
+            this.context.Products.Add(product);
+
+            return product;
+        }
+
+        private void AddProductsTopics(Product product, Topic topic)
+        {
+            this.context.ProductTopics.Add(new ProductsTopic
+            {
+                Product = product,
+                Topic = topic
             });
         }
 
 
+        private void AddTopic(Topic topic)
+        {
+            this.context.Topics.Add(topic);
+        }
 
 
 
@@ -249,15 +286,15 @@
         //        });
         //    }
 
-            //private void AddSale(Order sale)
-            //{
-            //    this.context.Sales.Add(sale);
-            //}
+        //private void AddSale(Order sale)
+        //{
+        //    this.context.Sales.Add(sale);
+        //}
 
-            //private void AddSaleDetails(OrderDetail salesDetail)
-            //{
-            //    this.context.SalesDetails.Add(salesDetail);
-            //}
-        }
-
+        //private void AddSaleDetails(OrderDetail salesDetail)
+        //{
+        //    this.context.SalesDetails.Add(salesDetail);
+        //}
     }
+
+}

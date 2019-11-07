@@ -1,7 +1,10 @@
 ﻿namespace AmericaVirtualChallengue.Web.Helpers
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     using Models.Data.Entities;
     using Models.ModelsView;
 
@@ -85,5 +88,30 @@
         {
             return await this.userManager.IsInRoleAsync(user, roleName);
         }
+
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            return await this.userManager.Users
+                .OrderBy(u => u.FirstName)
+                .ThenBy(u => u.LastName)
+                .ToListAsync();
+        }
+
+        public async Task<User> GetUserByIdAsync(string userId)
+        {
+            return await this.userManager.FindByIdAsync(userId);
+        }
+
+
+        public async Task RemoveUserFromRoleAsync(User user, string roleName)
+        {
+            await this.userManager.RemoveFromRoleAsync(user, roleName);
+        }
+
+        public async Task DeleteUserAsync(User user)
+        {
+            await this.userManager.DeleteAsync(user);
+        }
+
     }
 }

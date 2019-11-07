@@ -1,6 +1,7 @@
 ﻿namespace AmericaVirtualChallengue.Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -38,13 +39,17 @@
             }
 
             Product product = await this.productRepository.GetByIdAsync(id.Value);
-
             if (product == null)
             {
                 return new NotFoundViewResult("ProductNotFound");
             }
 
-            return View(product);
+            List<Topic> topics = this.productRepository.GetTopicsByProduct(product);
+
+            ProductViewAPI pVApi = this.productRepository.ToProductViewAPI(product, topics);
+
+
+            return View(pVApi);
         }
 
         // GET: Products/Create
@@ -197,7 +202,16 @@
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             Product product = await this.productRepository.GetByIdAsync(id);
-            await this.productRepository.DeleteAsync(product);
+            try
+            {
+                await this.productRepository.DeleteAsync(product);
+
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("Error", "You can not delete this object because it has related records");
+                return View(product);
+            }
 
             return RedirectToAction(nameof(Index));
         }
