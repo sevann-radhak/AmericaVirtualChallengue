@@ -14,6 +14,8 @@
     using Microsoft.IdentityModel.Tokens;
     using System.Text;
     using Models.Data.Repositories;
+    using Microsoft.Extensions.Logging;
+    using Serilog;
 
     public class Startup
     {
@@ -63,7 +65,7 @@
             // Seed: Initial data for DB
             services.AddTransient<SeedDb>();
 
-            // Implements the injection of repository, but using interface
+            // Implements the injection of mock repository, but using interface
             //services.AddScoped<IRepository, MockRepository>();
 
             services.AddScoped<IUserHelper, UserHelper>();
@@ -77,6 +79,18 @@
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            // Logs BD 
+            services.AddSingleton<Serilog.ILogger>(options =>
+            {
+                var connString = Configuration["ConnectionStrings:SeriLog"];
+                var tableName = Configuration["ConnectionStrings:TableName"];
+
+                return new LoggerConfiguration().WriteTo.
+                MSSqlServer(connString, tableName,
+                restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning,
+                autoCreateSqlTable: true).CreateLogger();
+            });
+
             // Not authorized page
             services.ConfigureApplicationCookie(options =>
             {
@@ -88,8 +102,10 @@
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddFile("Log.txt");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
