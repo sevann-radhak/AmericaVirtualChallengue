@@ -2,12 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
-    using AmericaVirtualChallengue.Web.Models.ModelsView;
     using Entities;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
+    using ModelsView;
 
     public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
@@ -18,12 +16,17 @@
             this.context = context;
         }
 
+        /// <summary>
+        /// GetTopicsByProduct
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
         public List<Topic> GetTopicsByProduct(Product product)
         {
             List<ProductsTopic> pts = context.ProductTopics.Where(pt => pt.Product == product).Include(pt => pt.Topic).ToList();
             List<Topic> topics = new List<Topic>();
 
-            foreach (var pt in pts)
+            foreach (ProductsTopic pt in pts)
             {
                 topics.Add(pt.Topic);
             }
@@ -31,6 +34,12 @@
             return topics;
         }
 
+        /// <summary>
+        /// ToProductViewAPI
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="topics"></param>
+        /// <returns></returns>
         public ProductViewAPI ToProductViewAPI(Product product, List<Topic> topics)
         {
             ProductViewAPI pVApi = new ProductViewAPI
@@ -47,9 +56,13 @@
             return pVApi;
         }
 
+        /// <summary>
+        /// GetComboProducts
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<SelectListItem> GetComboProducts()
         {
-            var list = this.context.Products.Select(p => new SelectListItem
+            List<SelectListItem> list = this.context.Products.Select(p => new SelectListItem
             {
                 Text = p.Name,
                 Value = p.Id.ToString()

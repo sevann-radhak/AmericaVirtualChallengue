@@ -14,11 +14,20 @@
             this.context = context;
         }
 
+        /// <summary>
+        /// GetAll
+        /// </summary>
+        /// <returns></returns>
         public IQueryable<T> GetAll()
         {
             return this.context.Set<T>().AsNoTracking();
         }
 
+        /// <summary>
+        /// GetByIdAsync
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<T> GetByIdAsync(int id)
         {
             return await this.context.Set<T>()
@@ -26,30 +35,54 @@
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
+        /// <summary>
+        /// CreateAsync
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public async Task CreateAsync(T entity)
         {
             await this.context.Set<T>().AddAsync(entity);
             await SaveAllAsync();
         }
 
+        /// <summary>
+        /// UpdateAsync
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public async Task UpdateAsync(T entity)
         {
             this.context.Set<T>().Update(entity);
             await SaveAllAsync();
         }
 
+        /// <summary>
+        /// DeleteAsync
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public async Task DeleteAsync(T entity)
         {
             this.context.Set<T>().Remove(entity);
             await SaveAllAsync();
         }
 
+        /// <summary>
+        /// ExistAsync
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<bool> ExistAsync(int id)
         {
             return await this.context.Set<T>().AnyAsync(e => e.Id == id);
 
         }
 
+        /// <summary>
+        /// SaveAllAsync
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> SaveAllAsync()
         {
             return await this.context.SaveChangesAsync() > 0;

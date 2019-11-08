@@ -21,12 +21,21 @@
             this.productRepository = productRepository;
         }
 
+        /// <summary>
+        /// GET: Products
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetProducts()
         {
             return Ok(this.productRepository.GetAll().OrderByDescending(p => p.Id));
         }
 
+        /// <summary>
+        /// GET: Products/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProducts(int id)
         {
@@ -40,7 +49,6 @@
 
             ProductViewAPI pVApi = this.productRepository.ToProductViewAPI(product, topics);
 
-            //return Ok(this.productRepository.GetProduct(id));
             return Ok(pVApi);
         }
     }

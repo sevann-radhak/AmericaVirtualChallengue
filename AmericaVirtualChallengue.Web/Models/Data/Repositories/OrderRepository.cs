@@ -3,10 +3,10 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using ModelsView;
     using Entities;
     using Helpers;
     using Microsoft.EntityFrameworkCore;
+    using ModelsView;
 
     public class OrderRepository : GenericRepository<Order>, IOrderRepository
     {
@@ -57,6 +57,7 @@
         /// <summary>
         /// GetOrderDetailAsync
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="userName"></param>
         /// <returns></returns>
         public async Task<OrderViewModel> GetOrderDetailAsync(int id, string userName)
@@ -76,7 +77,7 @@
 
             if (await this.userHelper.IsUserInRoleAsync(user, "Admin"))
             {
-                var order = this.context.Orders
+                Order order = this.context.Orders
                     .Include(u => u.User)
                     .Include(i => i.Items)
                     .ThenInclude(p => p.Product)
@@ -93,7 +94,7 @@
             }
             else
             {
-                var order = this.context.Orders
+                Order order = this.context.Orders
                     .Include(u => u.User)
                     .Include(i => i.Items)
                     .ThenInclude(p => p.Product)
@@ -102,8 +103,8 @@
 
                 if (order.User != user)
                 {
-                    return null ;
-                }                 
+                    return null;
+                }
 
                 view = new OrderViewModel
                 {

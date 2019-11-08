@@ -5,7 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using AmericaVirtualChallengue.Web.Helpers;
+    using Helpers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -22,14 +22,21 @@
             this.productRepository = productRepository;
         }
 
-        // GET: Products
+        /// <summary>
+        /// GET: Products
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             //TODO: hidden disabled products
             return View(this.productRepository.GetAll().OrderBy(p => p.Name));
         }
 
-        // GET: Products/Details/5
+        /// <summary>
+        /// GET: Products/Details/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -52,16 +59,21 @@
             return View(pVApi);
         }
 
-        // GET: Products/Create
+        /// <summary>
+        /// GET: Products/Create
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// POST: Products/Create
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductViewModel view)
@@ -92,14 +104,18 @@
                 Product product = this.ToProduct(view, path);
 
                 await this.productRepository.CreateAsync(product);
-                //await this.repository.SaveAllAsync();
+                
                 return RedirectToAction(nameof(Index));
             }
 
             return View(view);
         }
 
-        // GET: Products/Edit/5
+        /// <summary>
+        /// GET: Products/Edit/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -125,9 +141,11 @@
             return View(view);
         }
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// POST: Products/Edit/{id}
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductViewModel view)
@@ -177,7 +195,11 @@
             return View(view);
         }
 
-        // GET: Products/Delete/5
+        /// <summary>
+        /// GET: Products/Delete/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -196,7 +218,11 @@
             return View(product);
         }
 
-        // POST: Products/Delete/5
+        /// <summary>
+        /// POST: Products/Delete/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -216,6 +242,12 @@
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// ToProduct
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         private Product ToProduct(ProductViewModel view, string path)
         {
             return new Product
@@ -229,6 +261,11 @@
             };
         }
 
+        /// <summary>
+        /// ToProductViewModel
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
         private ProductViewModel ToProductViewModel(Product product)
         {
             return new ProductViewModel
@@ -242,6 +279,10 @@
             };
         }
 
+        /// <summary>
+        /// ProductNotFound
+        /// </summary>
+        /// <returns></returns>
         public IActionResult ProductNotFound()
         {
             return this.View();

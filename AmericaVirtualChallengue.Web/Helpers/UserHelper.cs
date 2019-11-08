@@ -102,7 +102,6 @@
             return await this.userManager.FindByIdAsync(userId);
         }
 
-
         public async Task RemoveUserFromRoleAsync(User user, string roleName)
         {
             await this.userManager.RemoveFromRoleAsync(user, roleName);

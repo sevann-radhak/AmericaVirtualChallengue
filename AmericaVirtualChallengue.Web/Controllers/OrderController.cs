@@ -1,11 +1,11 @@
 ﻿namespace AmericaVirtualChallengue.Web.Controllers
 {
-    using Models.Data;
-    using Models.ModelsView;
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Models.Data;
     using Models.Data.Repositories;
-    using System.Threading.Tasks;
+    using Models.ModelsView;
 
     [Authorize(Roles = "Admin, User")]
     public class OrdersController : Controller
@@ -24,27 +24,52 @@
             this.seriLogger = seriLogger;
         }
 
+        /// <summary>
+        /// Index
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
             System.Linq.IQueryable<Models.Data.Entities.Order> model = await orderRepository.GetOrdersAsync(this.User.Identity.Name);
             return View(model);
         }
+
+        /// <summary>
+        /// Details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Details(int id)
         {
-            if (!await orderRepository.ExistAsync(id)) return this.RedirectToAction("/Home/Error404");
+            if (!await orderRepository.ExistAsync(id))
+            {
+                return this.RedirectToAction("/Home/Error404");
+            }
 
-            var model = await orderRepository.GetOrderDetailAsync(id, this.User.Identity.Name);
+            OrderViewModel model = await orderRepository.GetOrderDetailAsync(id, this.User.Identity.Name);
 
-            if (model == null) return this.RedirectToAction("NotAuthorized", "Account");
+            if (model == null)
+            {
+                return this.RedirectToAction("NotAuthorized", "Account");
+            }
 
             return View(model);
         }
+
+        /// <summary>
+        /// Create
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Create()
         {
             System.Linq.IQueryable<Models.Data.Entities.OrderDetailTemp> model = await this.orderRepository.GetDetailTempsAsync(this.User.Identity.Name);
             return this.View(model);
         }
 
+        /// <summary>
+        /// AddProduct
+        /// </summary>
+        /// <returns></returns>
         public IActionResult AddProduct()
         {
             AddItemViewModel model = new AddItemViewModel
@@ -56,7 +81,11 @@
             return View(model);
         }
 
-        // Add a product to order temp
+        /// <summary>
+        /// POST: AddProduct to temp order
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddProduct(AddItemViewModel model)
         {
@@ -69,7 +98,11 @@
             return this.View(model);
         }
 
-        // Delete item from temp order
+        /// <summary>
+        /// Delete item from temp order
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> DeleteItem(int? id)
         {
             if (id == null)
@@ -82,6 +115,11 @@
             return this.RedirectToAction("Create");
         }
 
+        /// <summary>
+        /// Increase
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Increase(int? id)
         {
             if (id == null)
@@ -93,6 +131,11 @@
             return this.RedirectToAction("Create");
         }
 
+        /// <summary>
+        /// Decrease
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Decrease(int? id)
         {
             if (id == null)
@@ -104,6 +147,10 @@
             return this.RedirectToAction("Create");
         }
 
+        /// <summary>
+        /// ConfirmOrder
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> ConfirmOrder()
         {
             bool response = await this.orderRepository.ConfirmOrderAsync(this.User.Identity.Name);

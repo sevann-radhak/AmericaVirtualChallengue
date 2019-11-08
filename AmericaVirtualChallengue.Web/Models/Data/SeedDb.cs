@@ -253,48 +253,10 @@
             });
         }
 
-
         private void AddTopic(Topic topic)
         {
             this.context.Topics.Add(topic);
         }
-
-
-
-
-        //private void AddOption(Option option)
-        //    {
-        //        this.context.Options.Add(option);
-        //    }
-
-        //    private void AddTopic(Topic topic)
-        //    {
-        //        this.context.Topics.Add(topic);
-        //    }
-
-        //    private void AddProduct(Product product)
-        //    {
-        //        this.context.Products.Add(product);
-        //    }
-
-        //    private void AddProductsTopics(Product product, Topic topic)
-        //    {
-        //        this.context.ProductTopics.Add(new ProductsTopic
-        //        {
-        //            Product = product,
-        //            Topic = topic
-        //        });
-        //    }
-
-        //private void AddSale(Order sale)
-        //{
-        //    this.context.Sales.Add(sale);
-        //}
-
-        //private void AddSaleDetails(OrderDetail salesDetail)
-        //{
-        //    this.context.SalesDetails.Add(salesDetail);
-        //}
     }
 
 }
