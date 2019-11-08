@@ -65,14 +65,24 @@ This is an example of how to list things you need to use the software and how to
 ```sh
 https://github.com/sevannr/AmericaVirtualChallengue.git
 ```
+2. Configure Connection String if want to change default DB (localDB)
+
 3. Run it
 
-### Installation
+### Exploring
 Loggin:
 * The project include 3 default users:
   * sevann.radhak@gmail.com -> roles: admin, user
   * virtual.america@gmail.com -> roles: user
   * homero.simpson@gmail.com -> roles: user
+  
+  <strong>For loggin: UserName and Password are the same for every single user. Example
+    <p>
+      UserName: virtual.america@gmail.com
+      <br>
+      Password: virtual.america@gmail.com
+    </p>
+  </strong>
  
  Roles:
  * Admin role can use Product CRUD
