@@ -152,7 +152,7 @@
                     "Reverse Engineering: USB Controlled Home ",
                     "What platforms, devices, machines, networks, and data stores are being used? The bottom layer describes the available infrastructure and resources and how they are used by " +
                     "the system to perform its functions. Decisions made about this layer relate to concerns of performance, security, and availability.",
-                    "fifteen");
+                    "fiveteen");
 
                 this.AddProduct(
                     "Turn on and Off Your Things With a Laser!",
