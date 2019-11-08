@@ -12,7 +12,7 @@ namespace AmericaVirtualChallengue.Web.Models.Data.Entities
         public int Id { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
-        [MaxLength(60, ErrorMessage = "The field {0} only can contain {1} characters length")]
+        [MaxLength(500, ErrorMessage = "The field {0} only can contain {1} characters length")]
         public string Name { get; set; }
 
         [DataType(DataType.MultilineText)]
