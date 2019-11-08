@@ -23,14 +23,14 @@
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task CreateAsync(T entity);
+        Task<T> CreateAsync(T entity);
 
         /// <summary>
         /// UpdateAsync
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task UpdateAsync(T entity);
+        Task<T> UpdateAsync(T entity);
 
         /// <summary>
         /// DeleteAsync

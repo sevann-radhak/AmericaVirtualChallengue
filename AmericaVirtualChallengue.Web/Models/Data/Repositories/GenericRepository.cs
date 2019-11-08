@@ -40,10 +40,11 @@
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity)
         {
             await this.context.Set<T>().AddAsync(entity);
             await SaveAllAsync();
+            return entity;
         }
 
         /// <summary>
@@ -51,10 +52,11 @@
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             this.context.Set<T>().Update(entity);
             await SaveAllAsync();
+            return entity;
         }
 
         /// <summary>
