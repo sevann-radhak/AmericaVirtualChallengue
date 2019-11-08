@@ -16,10 +16,22 @@
         </ul>
         <h2>How to start</h2>
         <ul>
-            <li><a href="https://github.com/sevannr/AmericaVirtualChallengue" target="_blank">View README.md in Git repository</a></li>
+            <li><a href="https://github.com/sevannr/AmericaVirtualChallengue" target="_blank">Go to README.md in Git repository</a></li>
             <li><strong><span style="color: red">Check the users for loggin.</span></strong></li>
             <li>Test Products, Orders and Users modules logged with different roles <i class="fa fa-thumbs-up" aria-hidden="true"></i></li>
             <li>If running locally, check the DB (localdb) for Log table</li>
+        </ul>
+
+        <h2>Test API</h2>
+        <ul>
+            <li>Send POST Request to ["/Account/CreateToken"] with UserName and Password for getting <strong> token </strong></li>
+            <li>Send GET request for ["/api/Products"] and ["/api/Products/{id}"] for getting a valid model (example) of Product Entity</li>
+            <li>Send the token with Headers: (Key: Authorization, Value: "bearer {token}" and a valid model test methods</li>
+            <li>GET: ["/api/Products"]</li>
+            <li>GET: ["/api/Products{id}"]</li>
+            <li>POST: ["/api/Products"]</li>
+            <li>PUT: ["/api/Products/{id}"]</li>
+            <li>DELETE: ["/api/Products/{id}"]</li>
         </ul>
     </div>
 </div>
